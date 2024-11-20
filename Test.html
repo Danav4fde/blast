@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Blast on Click</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 50px;
+            animation: float 1s ease-out infinite; /* Faster burst speed (1s) */
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--randomX), var(--randomY)); /* Random directions */
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Function to create emoji popups (Explosion effect)
+        function createHeartExplosion(emoji, startX, startY) {
+            const totalHearts = 100; // Total hearts for the explosion effect
+
+            for (let i = 0; i < totalHearts; i++) {
+                const emojiElement = document.createElement('div');
+                emojiElement.classList.add('emoji');
+                emojiElement.textContent = emoji;
+
+                // Random spread for explosion (larger range for a more dramatic effect)
+                const randomX = Math.random() * 800 - 400 + 'px'; // Random horizontal spread (-400px to +400px)
+                const randomY = Math.random() * 800 - 400 + 'px'; // Random vertical spread (-400px to +400px)
+
+                emojiElement.style.left = `${startX}px`;
+                emojiElement.style.top = `${startY}px`;
+                emojiElement.style.setProperty('--randomX', randomX);
+                emojiElement.style.setProperty('--randomY', randomY);
+
+                // Append emoji to body
+                document.body.appendChild(emojiElement);
+
+                // Remove emoji after the animation is complete (1 second)
+                setTimeout(() => {
+                    emojiElement.remove();
+                }, 1000);  // Match the animation duration (1 second)
+            }
+        }
+
+        // Trigger explosion on mouse click
+        window.addEventListener('click', (event) => {
+            const startX = event.clientX; // X position of the click
+            const startY = event.clientY; // Y position of the click
+            createHeartExplosion('❤️', startX, startY); // Trigger explosion at the click location
+        });
+    </script>
+</body>
+</html>
